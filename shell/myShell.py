@@ -15,7 +15,7 @@ else:
     os.environ['PS1'] = '$ '
     os.write(1, (os.environ['PS1']).encode())
 
-
+mem = array()
 
 while True:
 
@@ -25,6 +25,18 @@ while True:
         args = args.decode().splitlines()
         
         #splits input into diferent tokens
-        for token in args:  
-            pass
+        for token in args:
+            if len(token[0]) == 0:
+                pass
+            #exit command
+            elif token[0].lower() == "exit":
+                sys.exit(0)
+
+            #cd changing directory command
+            elif token[0].lower() == "cd":
+                try:
+                    os.chdir(token[1])
+                except:
+                    os.write(1, ("cd %s: Directory does not exists") %token[1].encode())
+
     else: pass
