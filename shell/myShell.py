@@ -15,7 +15,7 @@ else:
     os.environ['PS1'] = '$ '
     os.write(1, (os.environ['PS1']).encode())
 
-mem = array()
+
 
 while True:
 
