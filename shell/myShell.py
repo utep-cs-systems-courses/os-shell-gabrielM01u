@@ -152,6 +152,47 @@ def command(args):
                 pass
     os.write(2, ("Could not execute %s\n" % args[0]).encode())
     sys.exit(1)
+    
+    
+#Input methods
+##global index and buffer for storage of input
+history = []
+buff = 0 
+index = 0 
+
+
+def myReadLine():
+    global history
+    line = "" # reading line... add chars to line
+    
+    currChar = myGetChar() # get input char from user keyboard
+    while (currChar != '' and currChar != "EOF"): # while not reached EOF
+        line += currChar
+        currChar = myGetChar()
+
+    buff = 0
+    index = 0
+    history.append(line)
+    return line
+
+
+def myGetChar():
+    global buff, index
+
+    if nextChar == buff:  # buffer empty
+        nextChar = 0; 
+        buff = os.read(0, 100) # (fd 0 is keyboard, num bytes)
+
+        if buff == None: # end of file
+            return "EOF"
+        
+    if nextChar < len(buff) - 1: # still reading input buffer
+        string = buff.decode() # .decode(): bytes to chars
+        currChar = string[nextChar] # get a char from buffer
+        nextChar += 1
+        return currChar
+    else:
+        return "EOF" # reached buffer end
 
 #main shell
 while True:
@@ -163,7 +204,7 @@ while True:
     else:
         os.environ['PS1'] = '$ '
         os.write(1, (os.environ['PS1']).encode())
-    args = os.read(0, 1000) #this reads 1000 bytes of input fd from keyboard
+    args = myReadLine() #this reads 1000 bytes of input fd from keyboard
     #No input
     if len(args) == 0:
         break
