@@ -178,18 +178,20 @@ def myReadLine():
 
 def myGetChar():
     global buff, index
-
+    nextChar = 0
     if nextChar == buff:  # buffer empty
         nextChar = 0; 
         buff = os.read(0, 100) # (fd 0 is keyboard, num bytes)
 
         if buff == None: # end of file
             return "EOF"
-        
+    print(str(len(buff)))    
     if nextChar < len(buff) - 1: # still reading input buffer
         string = buff.decode() # .decode(): bytes to chars
         currChar = string[nextChar] # get a char from buffer
         nextChar += 1
+
+        # print(currChar+'\n')
         return currChar
     else:
         return "EOF" # reached buffer end
@@ -208,6 +210,7 @@ while True:
     #No input
     if len(args) == 0:
         break
+    print("Command "+args+"entered")
     args = args.decode().splitlines()
     #splits line into tokens
     for token in args:  
